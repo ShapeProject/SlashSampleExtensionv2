@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
@@ -9,6 +9,9 @@ import "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
 import "./interfaces/ISlashCustomPlugin.sol";
 import "./libs/UniversalERC20.sol";
 
+/**
+ * PurchaseNftExtension コントラクト
+ */
 contract PurchaseNftExtension is ISlashCustomPlugin, Ownable, IERC1155Receiver {
     using UniversalERC20 for IERC20;
 
@@ -19,6 +22,9 @@ contract PurchaseNftExtension is ISlashCustomPlugin, Ownable, IERC1155Receiver {
         uint256 amount;
     }
 
+    /**
+     * receivePayment 支払い時に実行されるコントラクト
+     */
     function receivePayment(
         address receiveToken,
         uint256 amount,
@@ -33,6 +39,9 @@ contract PurchaseNftExtension is ISlashCustomPlugin, Ownable, IERC1155Receiver {
         purchaseNft(reserved);
     }
 
+    /**
+     * NFT購入メソッド
+     */
     function purchaseNft(bytes memory reserved) internal {
         PurchaseInfo memory info = abi.decode(reserved, (PurchaseInfo));
         require(info.nftContractAddress != address(0), "invalid nft address");
@@ -40,6 +49,7 @@ contract PurchaseNftExtension is ISlashCustomPlugin, Ownable, IERC1155Receiver {
         require(info.amount > 0, "invalid purchase amount");
 
         IERC1155 nft = IERC1155(info.nftContractAddress);
+        // トークンIDを指定して残高を確認ののち発行
         require(
             info.amount <= nft.balanceOf(address(this), info.nftTokenId), "no stocks"
         );

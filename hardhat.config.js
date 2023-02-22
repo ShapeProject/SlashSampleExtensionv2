@@ -22,10 +22,12 @@ module.exports = {
       url: "http://127.0.0.1:8545/",
       accounts: [accounts],
     },
+    /*
     goerli: {
       url: process.env.GOERLI_NODE_URL,
       accounts: [process.env.GOERLI_PRIVATE_KEY]
     },
+    */
     bsctest: {
       url: "https://data-seed-prebsc-1-s3.binance.org:8545/",
       accounts: [accounts],

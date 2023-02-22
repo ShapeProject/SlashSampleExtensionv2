@@ -7,6 +7,9 @@ const nftAbi = require('../abi/ERC1155Demo.json');
 
 const extAddress = '0x516AB6054a3f968ee44AD736890137Acf1ba3008';
 
+/**
+ * main()メソッド
+ */
 async function main() {
     const [account] = await ethers.getSigners();
     const contract = new hre.ethers.Contract(nftContractAddress, nftAbi, account);
